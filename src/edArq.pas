@@ -35,6 +35,7 @@ procedure terminaPrograma (liberaMemoria: boolean);
 procedure executaPalavra;
 procedure imprime;
 function escreveNoFimDoArq (s, nomeArq: string): boolean;
+procedure colocaCodificacaoPadrao;
 
 var     md5DoArquivo: string;
 
@@ -197,12 +198,11 @@ end;
 procedure fazCargaDoArquivo;
 var
     s: string;
-    comTabs, comQuebraPag: boolean;
+    comQuebraPag: boolean;
 Begin
     // acrescentado por Tiago M. C.: para o processamento dos caracteres tab e quebra de página
     // por padrão "CARACTERESTAB" = "NÃO" e "CARACTEREQUEBRAPAG" = "NÃO"
 
-    comTabs := primeiraLetra (sintAmbiente ('EDIVOX', 'CARACTERESTAB')) = 'S';
     comQuebraPag := primeiraLetra (sintAmbiente ('EDIVOX', 'CARACTEREQUEBRAPAG')) = 'S';
 
     texto.append('');  //Sem essa linha ocorre erro na abertura
@@ -362,7 +362,7 @@ begin
             texto.append('');
             texto.append('');
             texto[1] := '';
-            ansiUtfUnicode := C_ANSI;   // futuramente colocar default na configuração
+            colocaCodificacaoPadrao;
             fala ('EDARQNOV');
         end
     else
@@ -831,6 +831,18 @@ begin
     {$i-} close (arq); {$i+}
     if ioresult = 0 then;
     escreveNoFimDoArq := true;
+end;
+
+procedure colocaCodificacaoPadrao;
+var s: string;
+    begin
+    s := maiuscAnsi(sintAmbiente('EDIVOX', 'CODIFICACAO'));
+    if s = 'UTF8' then
+        ansiUtfUnicode := C_UTF8
+    else if s = 'UNICODE' then
+        ansiUtfUnicode := C_UNICODE
+    else
+        ansiUtfUnicode := C_ANSI;
 end;
 
 begin
