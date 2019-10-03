@@ -68,7 +68,6 @@ end;
 
 procedure tabulaInsere(numEspacos: integer);
 var posfinal, i: integer;
-    comTabs: boolean;
     s: string;
 label achou;
 begin
