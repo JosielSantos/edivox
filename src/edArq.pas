@@ -493,6 +493,7 @@ procedure salvaArquivo (linha1, linha2: integer);
 var
     i, j: integer;
     s: string;
+    preservaUltimasLinhasEmbranco: boolean;
 label inicio, fechaArq;
 begin
 
@@ -518,8 +519,12 @@ inicio:
     {$I+}
     ioresult;   // ignora erros
 
-    while (linha2 >= linha1) and (texto[linha2] = '') do
+    preservaUltimasLinhasEmBranco := primeiraLetra (sintAmbiente ('EDIVOX', 'PRESERVAULTIMASLINHASEMBRANCO')) = 'S';
+    if not preservaUltimasLinhasEmBranco then
+    begin
+        while (linha2 >= linha1) and (texto[linha2] = '') do
             linha2 := linha2 - 1;
+    end;
 
     For i := linha1 to linha2 Do
         begin
