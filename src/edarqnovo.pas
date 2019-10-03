@@ -10,7 +10,7 @@
 {
 {--------------------------------------------------------}
 
-Unit edArq;
+Unit edarqnovo;
 
 interface
 
@@ -44,6 +44,7 @@ uses edReform;
 
 var arq: file;
     arqSaida: text;
+    linhasDivididas: boolean;
     bufArq: array [0..1023] of char;
     pbufArq, lidosBuf: integer;
     fimDoArq: boolean;
@@ -177,6 +178,28 @@ begin
                 else
                     s := s + c;
 
+        if length (s) > tamMaxLinhaPermitido then
+            begin
+                if not linhasDivididas then
+                    begin
+                        fala ('EDLINGRA') ;
+                              { linhas grandes foram divididas }
+                        linhasDivididas := true;
+                    end;
+
+                if length (s) >= 250 then
+                    fimDaLinha := true;
+
+                if c = ' ' then
+                    begin
+                        fimDaLinha := true;
+                        while (c = ' ') and (not fimDoArq) do
+                           c := pegaCaracArq;
+                        if (c <> #$0d) and (c <> #$0a) then
+                            devolveCaracArq (c);
+                    end;
+            end;
+
     until fimDaLinha or fimDoArq;
 
     if (not fimDoArq) and (c = #$0d) then
@@ -202,10 +225,11 @@ Begin
     // acrescentado por Tiago M. C.: para o processamento dos caracteres tab e quebra de página
     // por padrão "CARACTERESTAB" = "NÃO" e "CARACTEREQUEBRAPAG" = "NÃO"
 
+    linhasDivididas := false;
+
     comTabs := primeiraLetra (sintAmbiente ('EDIVOX', 'CARACTERESTAB')) = 'S';
     comQuebraPag := primeiraLetra (sintAmbiente ('EDIVOX', 'CARACTEREQUEBRAPAG')) = 'S';
 
-    texto.append('');  //Sem essa linha ocorre erro na abertura
     While not fimDoArq do
         begin
             s := carregaUmaLinha (comTabs, comQuebraPag, arq);
@@ -357,13 +381,11 @@ begin
     {$i-} reset (arq, 1); {$i+}
     if ioresult <> 0 then
         begin
-            maxLinhas := 1;
-            texto.clear;
-            texto.append('');
-            texto.append('');
-            texto[1] := '';
-            ansiUtfUnicode := C_ANSI;   // futuramente colocar default na configuração
-            fala ('EDARQNOV');
+             maxLinhas := 1;
+             getmem (texto[1], 1);
+             texto[1] := '';
+             ansiUtfUnicode := C_ANSI;   // futuramente colocar default na configuração
+             fala ('EDARQNOV');
         end
     else
         begin
@@ -376,9 +398,7 @@ begin
             if maxlinhas = 0 then
                 begin
                     maxLinhas := 1;
-                    texto.clear;
-                    texto.append('');
-                    texto.append('');
+                    getmem (texto[1], 1);
                     texto[1] := '';
                 end;
 
