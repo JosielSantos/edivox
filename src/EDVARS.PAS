@@ -75,6 +75,7 @@ var
     somenteLeitura: boolean;     { já inicia lendo, nem pergunta se grava }
     informaCarga: boolean;       { informa ou não se arquivo carregado }
     veioDoDos: boolean;          { arquivo veio com opção /D }
+    comTabs: boolean; { Processa o caractere tab como tab e não espaço }
 
     escreveApenasTexto: boolean;
     modoFalaFormatacao: char;
