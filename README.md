@@ -12,5 +12,6 @@ O repositório começou com o código fonte original, que inevitavelmente ficará de
 * Adicionada opção de configuração para especificar se a tecla tab insere "\t" ou espaços - @thgcode
 * Adicionada opção de configuração para determinar codificação ao salvar arquivo - @thgcode
 * Adicionada opção de configuração para preservar últimas linhas em branco ao salvar o arquivo - @JosielSantos
+* Adicionada opção de configuração para usar fim de linha Unix ou Windows
 
 [sist_dosvox]: http://intervox.nce.ufrj.br/dosvox/

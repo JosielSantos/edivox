@@ -36,6 +36,7 @@ procedure executaPalavra;
 procedure imprime;
 function escreveNoFimDoArq (s, nomeArq: string): boolean;
 procedure colocaCodificacaoPadrao;
+function pegaCaracterFimDeLinha: string;
 
 var     md5DoArquivo: string;
 
@@ -492,7 +493,7 @@ end;
 procedure salvaArquivo (linha1, linha2: integer);
 var
     i, j: integer;
-    s: string;
+    s, caracterFimDeLinha: string;
     preservaUltimasLinhasEmbranco: boolean;
 label inicio, fechaArq;
 begin
@@ -526,15 +527,16 @@ inicio:
             linha2 := linha2 - 1;
     end;
 
+    caracterFimDeLinha := pegaCaracterFimDeLinha;
     For i := linha1 to linha2 Do
         begin
             {$I-}
             case ansiUtfUnicode of
-                C_ANSI:    writeln (arqSaida, texto[i]); {$I+}
-                C_UTF8:    writeln (arqSaida, ansiToUtf8(texto[i]));
+                C_ANSI:    write (arqSaida, texto[i] + caracterFimDeLinha); {$I+}
+                C_UTF8:    write (arqSaida, ansiToUtf8(texto[i]) + caracterFimDeLinha);
                 C_UNICODE: begin
                                s := texto[i];
-                               s := s + ^m^j;
+                               s := s + caracterFimDeLinha;
                                for j := length(s) downto 1 do
                                    insert (#$0, s, j+1);
                                write (arqSaida, s);
@@ -542,7 +544,7 @@ inicio:
                 C_UNICODE_BIG:
                            begin
                                s := texto[i];
-                               s := s + ^m^j;
+                               s := s + caracterFimDeLinha;
                                for j := length(s) downto 1 do
                                    insert (#$0, s, j);
                                write (arqSaida, s);
@@ -848,6 +850,27 @@ var s: string;
         ansiUtfUnicode := C_UNICODE
     else
         ansiUtfUnicode := C_ANSI;
+end;
+
+function pegaCaracterFimDeLinha: string;
+    var
+        useUnixLineEnding: boolean;
+begin
+    useUnixLineEnding := primeiraLetra (sintAmbiente ('EDIVOX', 'USAFIMDELINHAUNIX')) = 'S';
+    case ansiUtfUnicode of
+        C_ANSI, C_UTF8: begin
+            if useUnixLineEnding then
+                result := #$0a
+            else
+                result := #$0d#$0a;
+        end;
+        C_UNICODE, C_UNICODE_BIG: begin
+            if useUnixLineEnding then
+                result := ^j
+            else
+                result := ^m^j;
+        end;
+    end;
 end;
 
 begin
