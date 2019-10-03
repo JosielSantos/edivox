@@ -864,6 +864,8 @@ begin
     else if f = 'EDTATAB' then txtmsg := 'Número de espaços ao apertar tab'
     else if f = 'EDUSATAB' then txtmsg := 'Usa o caractere tab'
     else if f = 'EDCODIF' then txtmsg := 'Salva em qual codificação'
+    else if f = 'EDPRESERVULTLB' then txtmsg := 'Preserva últimas linhas em branco?'
+
     else
         txtmsg := '----- erro de mensagem ???? ----';
 end;
