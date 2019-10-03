@@ -19,7 +19,7 @@ uses
 
 procedure cmdMargem;
 procedure tabula;
-procedure tabulaInsere;
+procedure tabulaInsere(numEspacos: integer);
 procedure removeTabulacoes;
 procedure insereTabulacao;
 Procedure pedeMargens;
@@ -66,12 +66,12 @@ end;
 
 {--------------------------------------------------------}
 
-procedure tabulaInsere;
+procedure tabulaInsere(numEspacos: integer);
 var posfinal, i: integer;
     s: string;
 label achou;
 begin
-    posFinal := ((posx+3) div 4) * 4 + 1;
+    posFinal := ((posx+(numEspacos-1)) div numEspacos) * numEspacos + 1;
 
     s := texto[posy];
     for i := posx+1 to posFinal do

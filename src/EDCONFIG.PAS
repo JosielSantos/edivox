@@ -34,7 +34,7 @@ procedure formConfig;
 var velGeral: integer;
     confInsLinha, confQuebra, confPontuacao, confSoletrando, confFalandoPalavra, confAutomatica,
     confDicio, confCorrige, confSapi, confFormat: shortString;
-    confTipoSapi, confNum, confVeloc, confTonal, erro: integer;
+    confTipoSapi, confNum, confVeloc, confTonal, confTamanhoTab, erro: integer;
     i: integer;
     s: string;
 begin
@@ -69,6 +69,9 @@ begin
     val (sintAmbiente('EDIVOX', 'MARGDIR'), margDir, erro);
     if erro <> 0 then margDir := 79;
 
+    val (sintAmbiente('EDIVOX', 'TAMANHOTAB'), confTamanhoTab, erro);
+    if erro <> 0 then confTamanhoTab := 4;
+
     // Apresentando o formulário
 
     textBackground (BLUE);
@@ -100,6 +103,7 @@ begin
     formCampoInt ('EDNUMSAP', txtmsg('EDNUMSAP') {'Número SAPI: '},        confNum); {''}
     formCampoInt ('EDVEL',    txtmsg('EDVEL')    {'Velocidade SAPI: '},    confVeloc); {''}
     formCampoInt ('EDTOM',    txtmsg('EDTOM')    {'Tonalidade SAPI: '},    confTonal); {''}
+    formCampoInt ('EDTATAB',   txtmsg('EDTATAB')   {'tab: '}, confTamanhoTab); {''}
     formEdita (true);
 
     //Efetuando modificações
@@ -137,6 +141,9 @@ begin
     else
         modoFalaFormatacao := 'N';
 
+        if confTamanhoTab < 1 then tamanhoTab := 4
+        else tamanhoTab := confTamanhoTab;
+
     // gravando DOSVOX.INI
 
     sintGravaAmbiente ('EDIVOX', 'VELOCIDADE', intToStr(velGeral));
@@ -155,6 +162,7 @@ begin
     sintGravaAmbiente ('EDIVOX', 'NUMEROSAPI', intToStr(confNum));
     sintGravaAmbiente ('EDIVOX', 'VELOCIDADESAPI', intToStr(confVeloc));
     sintGravaAmbiente ('EDIVOX', 'TONALIDADESAPI', intToStr(confTonal));
+    sintGravaAmbiente ('EDIVOX', 'TAMANHOTAB', intToStr(tamanhoTab));
 
     fala ('EDAGUARC');
     sintPara;

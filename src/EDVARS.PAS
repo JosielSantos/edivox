@@ -82,6 +82,7 @@ var
     ansiUtfUnicode: TCodif;
 
     fatorAmpl: integer;          { fator de ampliação para baixa visão }
+    tamanhoTab: integer;
 
 {--------------------------------------------------------}
 

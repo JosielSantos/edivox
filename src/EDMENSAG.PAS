@@ -861,6 +861,7 @@ begin
     else if f = 'EDPTPBR' then txtmsg := 'Limpando e traduzindo de Pt para Br ...'
     else if f = 'EDLIMTXT' then txtmsg := 'Limpando o texto ...'
     else if f = 'EDPAGINA' then txtmsg := 'Página '
+    else if f = 'EDTATAB' then txtmsg := 'Número de espaços ao apertar tab'
 
     else
         txtmsg := '----- erro de mensagem ???? ----';

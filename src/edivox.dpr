@@ -222,6 +222,10 @@ begin
     s := sintAmbiente ('EDIVOX', 'CORRIGIRTODOTEXTO');
     corrigirTodoTexto := maiuscAnsi (copy (s, 1, 1)) = 'S';
 
+    s := sintAmbiente ('EDIVOX', 'TAMANHOTAB');
+    val (s, tamanhoTab, erro);
+    if erro <> 0 then tamanhoTab := 4;
+
     retomarNaLinha := copy (sintAmbiente ('EDIVOX', 'RETOMARNALINHA'), 1, 1) <> 'N';
 
     iniMarca := 0;
@@ -626,7 +630,7 @@ begin
                      proxLinhaNaMargem;
              end;
 
-        ^I : tabulaInsere;
+        ^I : tabulaInsere(tamanhoTab);
         ^t : tabula;
         ^h : removeLetra (true, true);
         ^b : if apertouShift then informaBloco
