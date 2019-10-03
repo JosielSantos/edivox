@@ -226,6 +226,8 @@ begin
     val (s, tamanhoTab, erro);
     if erro <> 0 then tamanhoTab := 4;
 
+    comTabs := primeiraLetra (sintAmbiente ('EDIVOX', 'CARACTERESTAB')) = 'S';
+
     retomarNaLinha := copy (sintAmbiente ('EDIVOX', 'RETOMARNALINHA'), 1, 1) <> 'N';
 
     iniMarca := 0;

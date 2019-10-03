@@ -211,9 +211,9 @@ var
 begin
     if not falaEspacos then exit;
     s := texto[posy];
-    if (trim (s) = '') or (s[1] <> ' ') then exit;
+    if (trim (s) = '') or ((s[1] <> ' ') and (s[1] <> TAB)) then exit;
     i := 1;
-    while (s [i] = ' ') and (i < length(s)) do
+    while ((s [i] = ' ') or (s[i] = TAB)) and (i < length(s)) do
         i := i + 1;
     i := i -1;
     sintetiza (intToStr(i));
