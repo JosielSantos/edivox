@@ -35,6 +35,7 @@ procedure terminaPrograma (liberaMemoria: boolean);
 procedure executaPalavra;
 procedure imprime;
 function escreveNoFimDoArq (s, nomeArq: string): boolean;
+procedure colocaCodificacaoPadrao;
 
 var     md5DoArquivo: string;
 
@@ -362,7 +363,7 @@ begin
             texto.append('');
             texto.append('');
             texto[1] := '';
-            ansiUtfUnicode := C_ANSI;   // futuramente colocar default na configuração
+            colocaCodificacaoPadrao;
             fala ('EDARQNOV');
         end
     else
@@ -831,6 +832,18 @@ begin
     {$i-} close (arq); {$i+}
     if ioresult = 0 then;
     escreveNoFimDoArq := true;
+end;
+
+procedure colocaCodificacaoPadrao;
+var s: string;
+    begin
+    s := maiuscAnsi(sintAmbiente('EDIVOX', 'CODIFICACAO'));
+    if s = 'UTF8' then
+        ansiUtfUnicode := C_UTF8
+    else if s = 'UNICODE' then
+        ansiUtfUnicode := C_UNICODE
+    else
+        ansiUtfUnicode := C_ANSI;
 end;
 
 begin

@@ -863,6 +863,7 @@ begin
     else if f = 'EDPAGINA' then txtmsg := 'Página '
     else if f = 'EDTATAB' then txtmsg := 'Número de espaços ao apertar tab'
     else if f = 'EDUSATAB' then txtmsg := 'Usa o caractere tab'
+    else if f = 'EDCODIF' then txtmsg := 'Salva em qual codificação'
     else
         txtmsg := '----- erro de mensagem ???? ----';
 end;

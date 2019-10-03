@@ -16,7 +16,7 @@ uses
     windows, sysUtils,
     DVcrt, DVWin, dvForm, dvstring,
     dvsapi, dvsapglb,
-    edvars, edMensag, edTela, edDicion;
+    edvars, edMensag, edTela, edDicion, edArq;
 
 procedure formConfig;
 procedure cmdConfig;
@@ -33,7 +33,7 @@ implementation
 procedure formConfig;
 var velGeral: integer;
     confInsLinha, confQuebra, confPontuacao, confSoletrando, confFalandoPalavra, confAutomatica,
-    confDicio, confCorrige, confSapi, confFormat, confUsaTab: shortString;
+    confDicio, confCorrige, confSapi, confFormat, confUsaTab, confCodif: shortString;
     confTipoSapi, confNum, confVeloc, confTonal, confTamanhoTab, erro: integer;
     i: integer;
     s: string;
@@ -75,6 +75,9 @@ begin
     confUsaTab := sintAmbiente('EDIVOX', 'CARACTERESTAB');
     if confUsaTab = '' then confUsaTab := 'NÃO';
 
+    confCodif := sintAmbiente('EDIVOX', 'CODIFICACAO');
+    if confCodif = '' then confCodif := 'ISO';
+
     // Apresentando o formulário
 
     textBackground (BLUE);
@@ -108,6 +111,7 @@ begin
     formCampoInt ('EDTOM',    txtmsg('EDTOM')    {'Tonalidade SAPI: '},    confTonal); {''}
     formCampoInt ('EDTATAB',   txtmsg('EDTATAB')   {'tab: '}, confTamanhoTab); {''}
     formCampo ('EDUSATAB',   txtmsg('EDUSATAB')   {'tab: '}, confUsaTab, 4); {''}
+    formCampo ('EDCODIF',   txtmsg('EDCODIF')   {'Salva em qual codificação'}, confCodif, 10); {''}
     formEdita (true);
 
     //Efetuando modificações
@@ -168,6 +172,8 @@ begin
     sintGravaAmbiente ('EDIVOX', 'TONALIDADESAPI', intToStr(confTonal));
     sintGravaAmbiente ('EDIVOX', 'TAMANHOTAB', intToStr(tamanhoTab));
     sintGravaAmbiente ('EDIVOX', 'CARACTERESTAB', confUsaTab);
+    sintGravaAmbiente ('EDIVOX', 'CODIFICACAO', confCodif);
+    colocaCodificacaoPadrao;
 
     sintPara;
 
