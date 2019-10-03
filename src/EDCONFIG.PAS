@@ -152,8 +152,6 @@ begin
         if confTamanhoTab < 1 then tamanhoTab := 4
         else tamanhoTab := confTamanhoTab;
 
-    comTabs := primeiraLetra (sintAmbiente ('EDIVOX', 'CARACTERESTAB')) = 'S';
-
     // gravando DOSVOX.INI
 
     sintGravaAmbiente ('EDIVOX', 'VELOCIDADE', intToStr(velGeral));
@@ -176,6 +174,8 @@ begin
     sintGravaAmbiente ('EDIVOX', 'CARACTERESTAB', confUsaTab);
     sintGravaAmbiente ('EDIVOX', 'CODIFICACAO', confCodif);
     colocaCodificacaoPadrao;
+
+    comTabs := primeiraLetra (sintAmbiente ('EDIVOX', 'CARACTERESTAB')) = 'S';
 
     sintPara;
 
