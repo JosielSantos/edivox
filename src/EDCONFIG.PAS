@@ -33,7 +33,7 @@ implementation
 procedure formConfig;
 var velGeral: integer;
     confInsLinha, confQuebra, confPontuacao, confSoletrando, confFalandoPalavra, confAutomatica,
-    confDicio, confCorrige, confSapi, confFormat: shortString;
+    confDicio, confCorrige, confSapi, confFormat, confUsaTab: shortString;
     confTipoSapi, confNum, confVeloc, confTonal, confTamanhoTab, erro: integer;
     i: integer;
     s: string;
@@ -72,6 +72,9 @@ begin
     val (sintAmbiente('EDIVOX', 'TAMANHOTAB'), confTamanhoTab, erro);
     if erro <> 0 then confTamanhoTab := 4;
 
+    confUsaTab := sintAmbiente('EDIVOX', 'CARACTERESTAB');
+    if confUsaTab = '' then confUsaTab := 'NÃO';
+
     // Apresentando o formulário
 
     textBackground (BLUE);
@@ -104,6 +107,7 @@ begin
     formCampoInt ('EDVEL',    txtmsg('EDVEL')    {'Velocidade SAPI: '},    confVeloc); {''}
     formCampoInt ('EDTOM',    txtmsg('EDTOM')    {'Tonalidade SAPI: '},    confTonal); {''}
     formCampoInt ('EDTATAB',   txtmsg('EDTATAB')   {'tab: '}, confTamanhoTab); {''}
+    formCampo ('EDUSATAB',   txtmsg('EDUSATAB')   {'tab: '}, confUsaTab, 4); {''}
     formEdita (true);
 
     //Efetuando modificações
@@ -163,6 +167,7 @@ begin
     sintGravaAmbiente ('EDIVOX', 'VELOCIDADESAPI', intToStr(confVeloc));
     sintGravaAmbiente ('EDIVOX', 'TONALIDADESAPI', intToStr(confTonal));
     sintGravaAmbiente ('EDIVOX', 'TAMANHOTAB', intToStr(tamanhoTab));
+    sintGravaAmbiente ('EDIVOX', 'CARACTERESTAB', confUsaTab);
 
     fala ('EDAGUARC');
     sintPara;
