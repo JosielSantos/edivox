@@ -198,12 +198,11 @@ end;
 procedure fazCargaDoArquivo;
 var
     s: string;
-    comTabs, comQuebraPag: boolean;
+    comQuebraPag: boolean;
 Begin
     // acrescentado por Tiago M. C.: para o processamento dos caracteres tab e quebra de página
     // por padrão "CARACTERESTAB" = "NÃO" e "CARACTEREQUEBRAPAG" = "NÃO"
 
-    comTabs := primeiraLetra (sintAmbiente ('EDIVOX', 'CARACTERESTAB')) = 'S';
     comQuebraPag := primeiraLetra (sintAmbiente ('EDIVOX', 'CARACTEREQUEBRAPAG')) = 'S';
 
     texto.append('');  //Sem essa linha ocorre erro na abertura

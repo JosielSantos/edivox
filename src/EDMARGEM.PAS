@@ -72,7 +72,6 @@ var posfinal, i: integer;
     s: string;
 label achou;
 begin
-    comTabs := primeiraLetra (sintAmbiente ('EDIVOX', 'CARACTERESTAB')) = 'S';
     if comTabs then numEspacos := 1; { Usa apenas um caractere tab por vez }
 
     posFinal := ((posx+(numEspacos-1)) div numEspacos) * numEspacos + 1;
