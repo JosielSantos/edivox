@@ -169,7 +169,6 @@ begin
     sintGravaAmbiente ('EDIVOX', 'TAMANHOTAB', intToStr(tamanhoTab));
     sintGravaAmbiente ('EDIVOX', 'CARACTERESTAB', confUsaTab);
 
-    fala ('EDAGUARC');
     sintPara;
 
     s := sintAmbiente ('EDIVOX', 'VELOCIDADE');
