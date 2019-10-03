@@ -14,7 +14,7 @@ Unit edMargem;
 
 interface
 uses
-    DVcrt, DVWin, dvString, sysutils,
+    DVcrt, DVWin, sysutils,
     edvars, edlinha, edMensag, edTela, edcursor;
 
 procedure cmdMargem;
@@ -68,20 +68,14 @@ end;
 
 procedure tabulaInsere(numEspacos: integer);
 var posfinal, i: integer;
-    comTabs: boolean;
     s: string;
 label achou;
 begin
-    if comTabs then numEspacos := 1; { Usa apenas um caractere tab por vez }
-
     posFinal := ((posx+(numEspacos-1)) div numEspacos) * numEspacos + 1;
 
     s := texto[posy];
     for i := posx+1 to posFinal do
-        if comTabs then
-            insert (TAB, s, posx)
-        else
-            insert (' ', s, posx);
+        insert (' ', s, posx);
 
     texto[posy] := s;
     posx := posFinal;
