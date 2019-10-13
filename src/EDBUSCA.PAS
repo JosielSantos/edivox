@@ -144,8 +144,7 @@ end;
 
 procedure trocaPalavra;
 var
-    c: char;
-    buscado, aTrocar: string;
+    op, buscado, aTrocar: shortString;
     nl: integer;
     achou: boolean;
     totalPalavras: int64;
@@ -182,32 +181,49 @@ var
         texto[nl] := saida;
     end;
 
-begin
-    fala ('EDTXTPRC');
+const
+    nOpcoesForm = 3; { qual o texto, qual substituir e se é para trocar no texto inteiro ou no bloco }
 
-    sintReadln (buscado);
+begin
+    buscado := '';
+    aTrocar := '';
+    op := '';
+    garanteEspacoTela (nOpcoesForm + 1); { mais uma linha para dizer se o texto foi trocado ou não}
+
+    formCria;
+    formCampo ('EDTXTPRC', txtmsg('EDTXTPRC') {'Qual o texto?'}, buscado, 250);
+    formCampo ('EDINFTXT', txtmsg('EDINFTXT') {'Informe o novo texto:'}, aTrocar, 250);
+    formCampoLista ('EDTODBLK', txtmsg('EDTODBLK') {'T para todo texto ou b para bloco?'}, op, 1, 'T|B');
+    formEdita (true);
+
     if buscado = '' then
         begin
             fala ('EDDESIST');
             exit;
         end;
 
-    fala ('EDINFTXT');
-    sintReadln (aTrocar);
+    op := maiuscAnsi (op);
 
-    repeat
+    if op = '' then
+        begin
+            fala ('EDDESIST');
+            exit;
+        end;
+
+    while not (op[1] in ['T', 'B']) do
+        begin
         fala ('EDTODBLK');
-        c := popupMenuPorLetra ('TB');
-        if c = #$1b then
+        op := maiuscAnsi(popupMenuPorLetra('TB'));
+        if op = '' + ESC then
             begin
-                fala ('EDDESIST');
-                exit;
-            end;
-    until c in ['T', 'B'];
+            fala ('EDDESIST');
+            exit;
+        end;
+    end;
 
     totalPalavras := 0;
     achou := false;
-    if c = 'T' then
+    if op = 'T' then
         begin
             for nl := 1 to maxLinhas do
                 if trocaTexto (nl) then achou := true;
