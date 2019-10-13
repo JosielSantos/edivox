@@ -33,7 +33,8 @@ implementation
 procedure formConfig;
 var velGeral: integer;
     confInsLinha, confQuebra, confPontuacao, confSoletrando, confFalandoPalavra, confAutomatica,
-    confDicio, confCorrige, confSapi, confFormat, confUsaTab, confCodif, confPreservaUltimasLinhasEmBranco: shortString;
+    confDicio, confCorrige, confSapi, confFormat, confUsaTab, confCodif: shortString;
+    confPreservaUltimasLinhasEmBranco, confUsaFimDeLinhaUnix: shortString;
     confTipoSapi, confNum, confVeloc, confTonal, confTamanhoTab, erro: integer;
     i: integer;
     s: string;
@@ -52,7 +53,6 @@ begin
     confDicio      := (sintAmbiente('EDIVOX', 'DICIONARIOATIVADO'));
     confCorrige    := (sintAmbiente('EDIVOX', 'CORRIGIRTODOTEXTO'));
     confFormat := (sintAmbiente('EDIVOX', 'MODOFALAFORMATACAO'));
-    confPreservaUltimasLinhasEmBranco := (sintAmbiente('EDIVOX', 'PRESERVAULTIMASLINHASEMBRANCO'));
     confSapi       := (sintAmbiente('EDIVOX', 'SAPIATIVADO'));
 
     val (sintAmbiente('EDIVOX', 'TIPOSAPI'), confTipoSapi, erro);
@@ -78,8 +78,13 @@ begin
     confCodif := sintAmbiente('EDIVOX', 'CODIFICACAO');
     if confCodif = '' then confCodif := 'ISO';
 
-    // Apresentando o formulário
+    confPreservaUltimasLinhasEmBranco := (sintAmbiente('EDIVOX', 'PRESERVAULTIMASLINHASEMBRANCO'));
+    if confPreservaUltimasLinhasEmBranco = '' then confPreservaUltimasLinhasEmBranco := 'NÃO';
 
+    confUsaFimDeLinhaUnix := (sintAmbiente('EDIVOX', 'USAFIMDELINHAUNIX'));
+    if confUsaFimDeLinhaUnix = '' then confUsaFimDeLinhaUnix := 'NÃO';
+
+    // Apresentando o formulário
     textBackground (BLUE);
     writeln;
     fala ('EDPAICON');
@@ -112,7 +117,8 @@ begin
     formCampoInt ('EDTATAB',   txtmsg('EDTATAB')   {'tab: '}, confTamanhoTab); {''}
     formCampo ('EDUSATAB',   txtmsg('EDUSATAB')   {'tab: '}, confUsaTab, 4); {''}
     formCampo ('EDCODIF',   txtmsg('EDCODIF')   {'Salva em qual codificação'}, confCodif, 10); {''}
-    formCampo    ('EDPRESERVULTLB', txtmsg('EDPRESERVULTLB') {'Preserva últimas linhas em branco'},           confPreservaUltimasLinhasEmBranco, 4); {''}
+    formCampo('EDPRESERVULTLB', txtmsg('EDPRESERVULTLB'), confPreservaUltimasLinhasEmBranco, 4);
+    formCampo('EDUSAEOLUNIX', txtmsg('EDUSAEOLUNIX'), confUsaFimDeLinhaUnix, 4);
     formEdita (true);
 
     //Efetuando modificações
@@ -175,6 +181,7 @@ begin
     sintGravaAmbiente ('EDIVOX', 'CARACTERESTAB', confUsaTab);
     sintGravaAmbiente ('EDIVOX', 'CODIFICACAO', confCodif);
     sintGravaAmbiente ('EDIVOX', 'PRESERVAULTIMASLINHASEMBRANCO', confPreservaUltimasLinhasEmBranco);
+    sintGravaAmbiente ('EDIVOX', 'USAFIMDELINHAUNIX', confUsaFimDeLinhaUnix);
     colocaCodificacaoPadrao;
     comTabs := primeiraLetra (sintAmbiente ('EDIVOX', 'CARACTERESTAB')) = 'S';
     sintPara;

@@ -865,6 +865,7 @@ begin
     else if f = 'EDUSATAB' then txtmsg := 'Usa o caractere tab'
     else if f = 'EDCODIF' then txtmsg := 'Salva em qual codificação'
     else if f = 'EDPRESERVULTLB' then txtmsg := 'Preserva últimas linhas em branco?'
+    else if f = 'EDUSAEOLUNIX' then txtmsg := 'Usa fim de linha Unix?'
 
     else
         txtmsg := '----- erro de mensagem ???? ----';
