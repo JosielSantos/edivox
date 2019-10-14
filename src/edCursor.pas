@@ -487,17 +487,17 @@ begin
     linha := texto [posy] + ' x';
 
     c := linha[posx];
-    if c <> ' ' then
+    if not eEspaco(c)  then
         repeat
             posx := posx + 1;
             c := linha[posx];
         until not (c in ['a'..'z', 'A'..'Z', '0'..'9', #128..#255]);
 
-    if c = ' ' then
+    if eEspaco (c) then
         repeat
             posx := posx + 1;
             c := linha[posx];
-        until c <> ' ';
+        until not eEspaco (c);
 
     if posx > tam+1 then
         begin
