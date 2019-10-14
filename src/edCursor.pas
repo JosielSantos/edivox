@@ -17,6 +17,7 @@ uses
     DVcrt, DVWin, Windows,
     edvars, edMensag, edTela, edEmbel, sysUtils, edDocUti;
 
+function eEspaco(c: char): boolean;
 Procedure compactaLinha (posy: integer);
 procedure cmdCursor;
 procedure insereLetra (letra: char);
