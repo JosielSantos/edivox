@@ -55,20 +55,27 @@ implementation
 
 {--------------------------------------------------------}
 
+function eEspaco(c: char): boolean;
+    begin
+    eEspaco := c in [' ', TAB];
+end;
+
+{--------------------------------------------------------}
+
 Procedure compactaLinha (posy: integer);
 var
     t, tamOrig: integer;
     s: string;
 begin
     tamOrig := length (texto[posy]);
-    if (tamOrig = 0) or (texto[posy][tamOrig] <> ' ') then
+    if (tamOrig = 0) or not (eEspaco (texto[posy][tamOrig])) then
         exit;
 
     s := texto [posy];
     t := tamOrig;
     if t > 0 then
         begin
-            while (t > 0) and (s[t] = ' ') do  t := t - 1;
+            while (t > 0) and (eEspaco (s[t])) do  t := t - 1;
             s := copy (s, 1, t);
         end;
 
@@ -211,9 +218,9 @@ var
 begin
     if not falaEspacos then exit;
     s := texto[posy];
-    if (trim (s) = '') or ((s[1] <> ' ') and (s[1] <> TAB)) then exit;
+    if (trim (s) = '') or not (eEspaco (s[1])) then exit;
     i := 1;
-    while ((s [i] = ' ') or (s[i] = TAB)) and (i < length(s)) do
+    while eEspaco (s[i]) and (i < length(s)) do
         i := i + 1;
     i := i -1;
     sintetiza (intToStr(i));
