@@ -17,6 +17,7 @@ uses
     DVcrt, DVWin, Windows, dvform, dvAmplia,
     edVars, edMensag, edDocUti, sysutils;
 
+function eEspaco(c: char): boolean;
 procedure desenhaTelaInicial;
 procedure escreveTela;
 procedure escreveLinha;
@@ -29,6 +30,15 @@ procedure trocaTamTela;
 {--------------------------------------------------------}
 
 implementation
+
+{--------------------------------------------------------}
+
+function eEspaco(c: char): boolean;
+    begin
+    eEspaco := c in [' ', TAB];
+end;
+
+{--------------------------------------------------------}
 
 procedure desenhaTelaInicial;
 begin

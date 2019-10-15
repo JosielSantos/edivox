@@ -17,7 +17,6 @@ uses
     DVcrt, DVWin, Windows,
     edvars, edMensag, edTela, edEmbel, sysUtils, edDocUti;
 
-function eEspaco(c: char): boolean;
 Procedure compactaLinha (posy: integer);
 procedure cmdCursor;
 procedure insereLetra (letra: char);
@@ -53,13 +52,6 @@ Procedure informaLinha (posAtual, totalLinhas: integer; falarLido: boolean);
 Procedure informaColuna;
 
 implementation
-
-{--------------------------------------------------------}
-
-function eEspaco(c: char): boolean;
-    begin
-    eEspaco := c in [' ', TAB];
-end;
 
 {--------------------------------------------------------}
 
