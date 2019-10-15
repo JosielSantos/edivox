@@ -90,7 +90,7 @@ begin
                 begin
                     str (i, s);
                     s := textoAjuda (nomeConversao + s);
-                    while (s <> '') and (s[1] = ' ') do delete (s, 1, 1);
+                    while (s <> '') and eEspaco (s[1]) do delete (s, 1, 1);
                     converte := s[1];
                 end;
         end;
@@ -110,7 +110,7 @@ begin
         posx := posx - 1;
         if posx < 1 then c := #0
                     else c := s[posx];
-    until c <> ' ';
+    until not eEspaco (c);
 
     repeat
         posx := posx - 1;
@@ -125,7 +125,7 @@ begin
 
     s1 := texto[posy];
 
-    if c <> ' ' then
+    if not eEspaco (c) then
         delete (s, 1, posx-1)
     else
         delete (s, 1, posx);
