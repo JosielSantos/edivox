@@ -50,7 +50,7 @@ achou:
     if length (s) < (posx-1) then
         begin
             while length (s) < (posx-1) do
-                s := s + ' ';
+                s := s + tabOuEspaco;
             salva := posx;
             texto[posy] := s;
             posx := salva;
@@ -77,10 +77,7 @@ begin
 
     s := texto[posy];
     for i := posx+1 to posFinal do
-        if comTabs then
-            insert (TAB, s, posx)
-        else
-            insert (' ', s, posx);
+        insert (tabOuEspaco, s, posx);
 
     texto[posy] := s;
     posx := posFinal;

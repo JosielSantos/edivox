@@ -149,7 +149,7 @@ Begin
             s := texto[y];
             if ncol > 0 then
                 for i := 1 to ncol do
-                    s := ' ' + s
+                    s := tabOuEspaco + s
             else
                 for i := 1 to abs(ncol) do
                     if (s <> '') and (eEspaco (s[1])) then
