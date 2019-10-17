@@ -17,6 +17,8 @@ uses
     DVcrt, DVWin, Windows, dvform, dvAmplia,
     edVars, edMensag, edDocUti, sysutils;
 
+function tabOuEspaco: char;
+function eEspaco(c: char): boolean;
 procedure desenhaTelaInicial;
 procedure escreveTela;
 procedure escreveLinha;
@@ -29,6 +31,25 @@ procedure trocaTamTela;
 {--------------------------------------------------------}
 
 implementation
+
+{--------------------------------------------------------}
+
+function tabOuEspaco: char;
+    begin
+    if comTabs then
+        tabOuEspaco := TAB
+    else
+        tabOuEspaco := ' ';
+end;
+
+{--------------------------------------------------------}
+
+function eEspaco(c: char): boolean;
+    begin
+    eEspaco := c in [' ', TAB];
+end;
+
+{--------------------------------------------------------}
 
 procedure desenhaTelaInicial;
 begin

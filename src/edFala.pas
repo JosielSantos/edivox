@@ -15,7 +15,7 @@ Unit edFala;
 interface
 uses
     Dvcrt, DvWin, dvWav, windows, sysutils,
-    edVars, edTela, edMensag, edDocUti, edDicion;
+    edVars, edTela, edMensag, edDocUti, edDicion, edCursor;
 
 Procedure cmdFala;
 Procedure falaPalavra;
@@ -45,7 +45,7 @@ Begin
         Then exit;
 
     j := posx;
-    while (j < length(f)) and (f[j] = ' ')  Do
+    while (j < length(f)) and eEspaco (f[j])  Do
         inc (j);
 
     if f[j] = '<' then

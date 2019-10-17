@@ -108,7 +108,7 @@ Begin
         begin
             s := texto[y];
             s := s + '*';
-            while s[1] = ' ' do
+            while eEspaco (s[1])  do
                 delete (s, 1, 1);
             delete (s, length(s), 1);
 
@@ -149,10 +149,10 @@ Begin
             s := texto[y];
             if ncol > 0 then
                 for i := 1 to ncol do
-                    s := ' ' + s
+                    s := tabOuEspaco + s
             else
                 for i := 1 to abs(ncol) do
-                    if (s <> '') and (s[1] = ' ') then
+                    if (s <> '') and (eEspaco (s[1])) then
                         delete (s, 1, 1);
 
             texto[y] := s;
@@ -194,7 +194,7 @@ const MARCAFIM = ^f;
             end;
 
         for posBranco := limiteDir+1 downto 2 do
-            if txt[posBranco] = ' ' then
+            if eEspaco (txt[posBranco]) then
                 goto parteLinha;
 
         posBranco := limiteDir;
@@ -222,7 +222,7 @@ parteLinha:
 
     function inicioParagrafo (linha: string): boolean;
     begin
-        if (trim(linha) <> '') and (linha [1] <> ' ') then
+        if (trim(linha) <> '') and not eEspaco (linha [1]) then
             inicioParagrafo := false
         else
             inicioParagrafo := true;
@@ -243,7 +243,7 @@ parteLinha:
                         if c >= margAntiga then
                             goto proxLinha;
 
-                        if (texto[l][c] <> ' ') then
+                        if not eEspaco(texto[l][c]) then
                             margAntiga := c;
                     end;
     proxLinha:
@@ -262,7 +262,7 @@ parteLinha:
                      {--- remove margem antiga ---}
 
         for i := 1 to margAntiga-1 do
-            if (length (linha) = 0) or (linha[1] <> ' ') then
+            if (length (linha) = 0) or not eEspaco (linha[1]) then
                 goto bcoEsqRemov
             else
                 delete (linha, 1, 1);
@@ -270,13 +270,13 @@ parteLinha:
 bcoEsqRemov:
                      {--- acha primeiro nao branco ---}
         i := 1;
-        while (i < length(linha)) and (linha [i] = ' ') do
+        while (i < length(linha)) and eEspaco (linha [i]) do
            i := i + 1;
 
                      {--- compacta brancos seguidos ---}
 
         while i < length(linha) do
-            if (linha[i] = ' ') and (linha[i+1] = ' ') then
+            if eEspaco (linha[i]) and eEspaco (linha[i+1]) then
                 delete (linha, i, 1)
             else
                 i := i + 1;
@@ -359,7 +359,7 @@ var
         if length (linha) < lim then
             lim := length (linha);
         for i := 1 to lim do
-            if linha [i] <> ' ' then
+            if not eEspaco(linha [i]) then
                 begin
                     EInicioParagrafo := false;
                     exit;
@@ -374,7 +374,7 @@ var
 
     begin
         for i := length (s) downto 1 do
-            if s [i] = ' ' then
+            if eEspaco (s [i])  then
                 delete (s, i, 1)
             else
                 goto limpouFim;
@@ -383,7 +383,7 @@ var
 
     limpouFim:
         for primCarac := margEsq to length(s) do
-            if s [primCarac] <> ' ' then
+            if not eEspaco (s [primCarac]) then
                 goto achouNaoBranco;
         primCarac := length(s) + 1;
 
@@ -394,7 +394,7 @@ var
                 pbr := length(s)-1;
                 while length (s) <> margDir do
                     begin
-                        while (pbr > primCarac) and (s [pbr] <> ' ') do
+                        while (pbr > primCarac) and not eEspaco(s [pbr]) do
                             pbr := pbr - 1;
                         if pbr <= primCarac then
                             pbr := length(s)-1
@@ -449,7 +449,7 @@ begin
 
             {--- busca primeiro branco a direita ---}
             for i := posx to margDir-1 do
-                if texto[posy][i] = ' ' then
+                if eEspaco (texto[posy][i]) then
                     begin
                         posBranco := i;
                         goto brancoDir;
@@ -466,7 +466,7 @@ brancoDir:
 
             {--- acerta margem da linha quebrada ---}
 
-            while (s2 <> ' ') and (s2 [1] = ' ') do
+            while not (eEspaco (s2[1]) and (length(s2) = 1)) and eEspaco (s2 [1]) do
                 delete (s2, 1, 1);
             bco := '';
             for i := 2 to margEsq do
@@ -486,7 +486,7 @@ brancoDir:
             {--- busca primeiro branco a esquerda ---}
 buscaEsq:
             for i := posx-1 downto margEsq+1 do
-                if texto[posy][i] = ' ' then
+                if eEspaco (texto[posy][i]) then
                     begin
                         posBranco := i;
                         goto brancoEsq;
@@ -504,7 +504,7 @@ brancoEsq:
 
             {--- acerta margem da linha quebrada ---}
 
-            while (s2 <> ' ') and (s2 [1] = ' ') do
+            while not (eEspaco (s2[1]) and (length(s2) = 1)) and eEspaco (s2 [1]) do
                 begin
                      delete (s2, 1, 1);
                      salvax := salvax - 1;
@@ -518,7 +518,7 @@ brancoEsq:
 
             {--- remove brancos da direita da primeira linha ---}
 
-            while (s1 <> '') and (s1 [length(s1)] = ' ') do
+            while (s1 <> '') and eEspaco (s1 [length(s1)]) do
                 delete (s1, length(s1), 1);
 
             {--- recria as duas linhas }
