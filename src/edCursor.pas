@@ -15,7 +15,7 @@ Unit edCursor;
 interface
 uses
     DVcrt, DVWin, Windows,
-    edvars, edMensag, edTela, edEmbel, sysUtils, edDocUti;
+    edvars, edMensag, edTela, edEmbel, sysUtils, edDocUti, math;
 
 Procedure compactaLinha (posy: integer);
 procedure cmdCursor;
@@ -211,14 +211,26 @@ procedure falaEspacosNaFrente;
 var
     i: integer;
     s: string;
+const
+    IDENT_BASE_FREQ = 220;
+    IDENT_DURACAO_BEEP = 80; {Milesegundos}
+    IDENT_MAX_ESPACOS = 72;
 begin
     if not falaEspacos then exit;
     s := texto[posy];
-    if (trim (s) = '') or not (eEspaco (s[1])) then exit;
+    if (trim (s) = '') or not (eEspaco (s[1])) then
+    begin
+        Windows.Beep(IDENT_BASE_FREQ, IDENT_DURACAO_BEEP);
+        exit;
+    end;
     i := 1;
     while eEspaco (s[i]) and (i < length(s)) do
         i := i + 1;
     i := i -1;
+    if i < IDENT_MAX_ESPACOS then
+    begin
+        Windows.Beep(trunc(IDENT_BASE_FREQ * power(2, i / 24)), IDENT_DURACAO_BEEP);
+    end;
     sintetiza (intToStr(i));
     sintClek;
 end;
