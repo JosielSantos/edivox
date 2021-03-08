@@ -44,7 +44,7 @@ var
     autoFala: boolean;           { ao mudar de linha, fala }
     extPadrao: string;           { extensão padrão do arquivo}
 
-    nomeArq : string;            { nome do arquivo editado }
+    nomeArq, uriArq : string;            { nome do arquivo editado }
     buscado : string;            { texto em busca }
     linhaRemovida: string;       { ultima linha removida }
     statusTecControle: word;     { status das teclas shift, control, etc }

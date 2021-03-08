@@ -52,6 +52,7 @@ Procedure informaLinha (posAtual, totalLinhas: integer; falarLido: boolean);
 Procedure informaColuna;
 
 implementation
+uses edLsp;
 
 {--------------------------------------------------------}
 
@@ -90,6 +91,7 @@ begin
 
     posx := posx + 1;
 
+mudouDocumentoLsp(uriArq, texto.Text);
     escreveLinha;
 
     if (length(texto[posy]) > margDir) then

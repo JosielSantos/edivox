@@ -42,7 +42,7 @@ var     md5DoArquivo: string;
 
 implementation
 
-uses edReform, edLsp;
+uses edReform, edLsp, strUtils;
 
 var arq: file;
     arqSaida: text;
@@ -72,6 +72,7 @@ end;
 
 procedure terminaPrograma (liberaMemoria: boolean);
 begin
+    fechaLsp;
     if liberaMemoria then texto.Free;
     salvaPosicao;
 
@@ -358,6 +359,8 @@ begin
         begin
         sintWriteln('Não deu pra abrir o lsp');
     end;
+uriArq := 'file:///' + ansiReplaceStr(ansiReplaceStr(nomeArq, '\', '/'), ':', '%3A');
+sintetiza(uriArq);
 
     assign (arq, nomeArq);
     {$i-} reset (arq, 1); {$i+}
@@ -391,6 +394,8 @@ begin
             if informaCarga then fala ('EDARQCRG');
             informaCarga := true;
         end;
+
+abriuDocumentoLsp(uriArq, 'typescript', 1, texto.text);
 
     posx := 1;
     posy := recupPosicao;

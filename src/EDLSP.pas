@@ -5,10 +5,15 @@
 unit edlsp;
 interface
 function abreLsp(comando: string): boolean;
+procedure fechaLsp;
+
+procedure abriuDocumentoLsp(uri, linguagem: string; versao: integer; texto: string);
+procedure mudouDocumentoLsp(uri: string; texto: string);
 implementation
 uses dvWin, strUtils, sysUtils, windows, superObject, pyPipe;
 const CRLF = #13 + #10;
 var id: longWord;
+    versao: longWord;
     buffer: string;
 
 procedure debug(s: string);
@@ -55,12 +60,21 @@ function extraiLinhaDoBuffer: string;
     end;
 end;
 
+procedure debugaStdErr;
+    var s: string;
+    begin
+    repeat
+        s := readPipeInput(errorPipeRead); {para ler o stderr do processo }
+        debug(s);
+    until s = '';
+end;
+
 function leRespostaJsonRpc: iSuperObject;
     var linha: string;
     tamanho: integer;
     begin
     repeat
-        //debug(readPipeInput(errorPipeRead)); para ler o stderr do processo
+        debugaStdErr;
         leParaOBuffer;
         linha := extraiLinhaDoBuffer;
     until ansiStartsStr('CONTENT-LENGTH', maiuscAnsi(linha));
@@ -74,11 +88,7 @@ function leRespostaJsonRpc: iSuperObject;
         leParaOBuffer;
     end;
     leRespostaJsonRpc := so(copy(buffer, 1, tamanho));
-
-    if length(buffer) > tamanho then
-        begin
-        buffer := copy(buffer, tamanho + 1, length(buffer) - tamanho);
-    end;
+    delete(buffer, 1, tamanho);
 end;
 
 function fazHandShake: boolean;
@@ -104,5 +114,58 @@ function abreLsp(comando: string): boolean;
 
     id := 0;
     abreLsp := fazHandShake;
+end;
+
+procedure fechaLsp;
+    begin
+    pipeStop;
+end;
+
+procedure enviaChamada(metodo: string; params: iSuperObject);
+    var chamada: iSuperObject;
+    begin
+    chamada := so;
+    chamada.S['method'] := metodo;
+    chamada.O['params'] := params;
+enviaJsonRpc(chamada);
+end;
+
+procedure abriuDocumentoLsp(uri, linguagem: string; versao: integer; texto: string);
+    var documento: iSuperObject;
+resposta: iSuperObject;
+    begin
+    versao := 0;
+    documento := so;
+    documento.S['uri'] := uri;
+    documento.S['languageId'] := linguagem;
+    documento.I['version'] := versao;
+    documento.S['text'] := texto;
+
+    enviaChamada('textDocument/didOpen', documento);
+
+    resposta := leRespostaJsonRpc;
+    debug(resposta.asJson);
+end;
+
+// TODO implementar mudanças com documentChangeEvent completo
+procedure mudouDocumentoLsp(uri: string; texto: string);
+    var idDocumento, mudancas, params, resposta: iSuperObject;
+    begin
+    idDocumento := so;
+    idDocumento.S['uri'] := uri;
+    idDocumento.I['version'] := versao;
+
+    inc(versao);
+
+    mudancas := so;
+    mudancas.S['text'] := texto;
+
+    params := so;
+    params.O['textDocument'] := idDocumento;
+    params.O['contentChanges'] := mudancas;
+
+    enviaChamada('textDocument/didChange', params);
+    resposta := leRespostaJsonRpc;
+    debug(resposta.asJson);
 end;
 end.
