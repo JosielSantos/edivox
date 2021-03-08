@@ -42,7 +42,7 @@ var     md5DoArquivo: string;
 
 implementation
 
-uses edReform;
+uses edReform, edLsp;
 
 var arq: file;
     arqSaida: text;
@@ -353,6 +353,11 @@ begin
             fala ('EDDESIST');
             exit;
         end;
+
+    if not abreLsp('node D:\node\node_modules\typescript-language-server\lib\cli.js --stdio') then
+        begin
+        sintWriteln('Não deu pra abrir o lsp');
+    end;
 
     assign (arq, nomeArq);
     {$i-} reset (arq, 1); {$i+}
