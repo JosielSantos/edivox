@@ -2,21 +2,21 @@ name: build
 on: [push]
 jobs:
   Setup-compiler:
-  - name: checkout
-    uses: actions/checkout@v1
-  - name: download-compiler
     runs-on: ubuntu-latest
     steps:
-      - run: chmod 755 pipeline/*.sh
-      - run: ./pipeline/download-compiler.sh
+      - name: checkout
+        uses: actions/checkout@v1
+      - name: download-compiler
+        - run: chmod 755 pipeline/*.sh
+        - run: ./pipeline/download-compiler.sh
   build:
-    - name: compile
-      needs: setup-compiler
-      runs-on: ubuntu-latest
-      steps:
+    needs: setup-compiler
+    runs-on: ubuntu-latest
+    steps:
+      - name: compile
         - run: ./pipeline/build.sh
-    - name: upload-executable
-      uses: actions/upload-artifact@v1
-      with:
-        name: executable
-        path: src/edivox.exe
+      - name: upload-executable
+        uses: actions/upload-artifact@v1
+        with:
+          name: executable
+          path: src/edivox.exe
