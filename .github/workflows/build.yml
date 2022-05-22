@@ -4,18 +4,18 @@ jobs:
   Setup-compiler:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v1
-      - name: download-compiler
+      - name: Download Compiler
         - run: chmod 755 pipeline/*.sh
         - run: ./pipeline/download-compiler.sh
   build:
     needs: setup-compiler
     runs-on: ubuntu-latest
     steps:
-      - name: compile
-        - run: ./pipeline/build.sh
-      - name: upload-executable
+      - name: Compile
+        run: ./pipeline/build.sh
+      - name: Upload Executable
         uses: actions/upload-artifact@v1
         with:
           name: executable
