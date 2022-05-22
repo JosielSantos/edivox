@@ -1,0 +1,3 @@
+[submodule "dvtradutor"]
+	path = dvtradutor
+	url = https://github.com/thgcode/dvtradutor.git
