@@ -5,7 +5,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
       - name: Fix permissions
         run: chmod 755 pipeline/*.sh
       - name: Download compiler
