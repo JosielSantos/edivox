@@ -1,7 +1,7 @@
 name: build
 on: [push]
 jobs:
-  Setup-compiler:
+  Build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -10,10 +10,6 @@ jobs:
         run: chmod 755 pipeline/*.sh
       - name: Download compiler
         run: ./pipeline/download-compiler.sh
-  build:
-    needs: setup-compiler
-    runs-on: ubuntu-latest
-    steps:
       - name: Compile
         run: ./pipeline/build.sh
       - name: Upload Executable
