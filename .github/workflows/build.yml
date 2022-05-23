@@ -6,9 +6,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Download Compiler
-        - run: chmod 755 pipeline/*.sh
-        - run: ./pipeline/download-compiler.sh
+      - name: Fix permissions
+        run: chmod 755 pipeline/*.sh
+      - name: Download compiler
+        run: ./pipeline/download-compiler.sh
   build:
     needs: setup-compiler
     runs-on: ubuntu-latest
