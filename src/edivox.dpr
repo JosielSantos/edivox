@@ -36,6 +36,7 @@ uses
   edTela,
   edCursor,
   edAcento,
+  edAtu,
   edLinha,
   edArq,
   edBloco,
@@ -159,6 +160,9 @@ begin
          fala ('EDMSGINI');
     TextColor (WHITE);
     window (1,1,80,25);
+
+    if temAtualizacao then
+      sintetiza('Uma nova versão do edivox está disponível.');
 
     texto.clear;
     val (sintAmbiente('EDIVOX', 'MARGDIR'), margDir, erro);
