@@ -15,7 +15,7 @@ Unit edBloco;
 
 interface
 uses
-    DVcrt, DVWin, DVarq, DVdde, windows, sysUtils,
+    DVcrt, DVWin, DVarq, windows, sysUtils,
     dvForm,
     edVars, edMensag, edLinha, edArq, edAcento, edEmbel, edTela, eddicion,
     edCursor, edReform, edTransf;
@@ -600,58 +600,6 @@ end;
 
 {--------------------------------------------------------}
 
-procedure enviaServidor;
-var i: integer;
-    servidor, topico, item: string [30];
-    tamanho: longint;
-    p: pchar;
-    posic: integer;
-begin
-    if blocoInvalido then
-        begin
-            fala ('EDBLKINV');   { bloco invalido }
-            exit;
-        end;
-
-    servidor := sintAmbiente ('EDIVOX', 'SERVIDOR');
-    if servidor = '' then
-        servidor := 'MONOLOG';
-    topico := sintAmbiente ('EDIVOX', 'TOPICO');
-    if topico = '' then
-        topico := 'TALK';
-    item := sintAmbiente ('EDIVOX', 'ITEM');
-
-    while sintFalando do waitMessage;
-
-    tamanho := 1;
-    for i := iniBloco to fimBloco do
-        tamanho := tamanho + length (texto[i]) + 2;
-
-    if tamanho > longint (65000) then
-        begin
-            fala ('EDGRANDE');
-            exit;
-        end;
-
-    getmem (p, tamanho);
-    posic := 0;
-
-    for i := iniBloco to fimBloco do
-        begin
-            move (texto[i][1], p[posic], length (texto[i]));
-            posic := posic + length (texto[i]);
-            p[posic] := #$0d;
-            p[posic+1] := #$0a;
-            posic := posic + 2;
-        end;
-    p[posic] := #$0;
-
-    if not enviaServidorDDE (servidor, topico, item, p) then
-        fala ('EDERRSRV');
-
-    freemem (p, tamanho);
-end;
-
 {--------------------------------------------------------}
 
 procedure justificaParagrafo;
@@ -760,7 +708,6 @@ deNovo:
          'P' : blocoParagrafo;
          'S' : blocoLinha;
          'J' : justificaParagrafo;
-////Não funciona travando Edivox         'S' : enviaServidor;
          'V' : verificaBloco;
 
          'X' : reformata;

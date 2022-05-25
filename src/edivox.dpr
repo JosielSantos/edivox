@@ -17,7 +17,7 @@
 {--------------------------------------------------------}
 
 program Edivox;
-
+{$apptype gui}
 uses
   Windows,
   SysUtils,
