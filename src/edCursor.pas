@@ -710,12 +710,17 @@ end;
 
 {--------------------------------------------------------}
 
-{ Calcula a coluna onde termina a indentação da linha. Caso a linha não contenha indentação retorna 1 }
+{ Calcula a coluna onde termina a indentação da linha. Caso a linha não contenha indentação retorna 0 }
 
 function calculaNivelDeIndentacao(texto: string): integer;
     begin
+    if texto = '' then
+        begin
+        result := 0;
+        exit;
+    end;
+
     result := 1;
-    if texto = '' then exit;
 
     while (result <= length(texto)) and (texto[result] = ' ') or (texto[result] = TAB)do
         inc (result);
