@@ -505,11 +505,15 @@ reprocTecla:
 
         CIMA:    if (statusTecControle and CONTROL) <> 0 then
                      SetaVertCima
+                 else if  apertouShift then
+                     recuaParaMesmoNivelDeIndentacao
                  else
                      SetaCima;
 
         BAIX:    if (statusTecControle and CONTROL) <> 0 then
                      SetaVertBaixo
+                 else if  apertouShift then
+                     avancaParaMesmoNivelDeIndentacao
                  else
                      Setabaixo;
 

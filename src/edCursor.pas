@@ -51,6 +51,9 @@ Procedure apagaIniciolinha;
 Procedure informaLinha (posAtual, totalLinhas: integer; falarLido: boolean);
 Procedure informaColuna;
 
+procedure recuaParaMesmoNivelDeIndentacao;
+procedure avancaParaMesmoNivelDeIndentacao;
+
 implementation
 
 {--------------------------------------------------------}
@@ -703,6 +706,89 @@ deNovo:
     end;
 
     escreveTela;
+end;
+
+{--------------------------------------------------------}
+
+{ Calcula a coluna onde termina a indentação da linha. Caso a linha não contenha indentação retorna 0 }
+
+function calculaNivelDeIndentacao(texto: string): integer;
+    begin
+    if texto = '' then
+        begin
+        result := 0;
+        exit;
+    end;
+
+    result := 1;
+
+    while (result <= length(texto)) and (texto[result] = ' ') or (texto[result] = TAB)do
+        inc (result);
+end;
+
+{ Procura linha com o mesmo nível de indentação, retorna -1 caso não encontrou
+    Sentido pode ser: -1 para procurar para cima no texto. 1 para procurar para baixo. }
+
+function procuraLinhaComMesmoNivelDeIndentacao(sentido: integer): integer;
+    var nivelAtual, nivelLinha: integer;
+    linha: integer;
+    begin
+    nivelLinha := calculaNivelDeIndentacao(texto[posy]);
+    linha := posy + sentido;
+
+    while (linha > 0) and (linha <= maxlinhas) do
+        begin
+        nivelAtual := calculaNivelDeIndentacao(texto[linha]);
+
+        if nivelAtual = nivelLinha then
+            begin
+            result := linha;
+            exit;
+        end;
+
+        linha := linha + sentido;
+    end;
+
+    result := -1;
+end;
+
+Procedure avancaOuRecuaIndentacao (sentido: integer);
+    var linha: integer;
+    begin
+    sintClek;
+
+    linha := procuraLinhaComMesmoNivelDeIndentacao(sentido);
+
+    if linha = -1 then
+        begin { Não achou a linha }
+        sintBip;
+        sintBip;
+        exit;
+    end;
+
+    posy := linha;
+    posx := 1;
+
+    If posy > maxlinhas Then
+        begin
+            posy := maxlinhas;
+            limpaBufTec;
+            fala ('EDFIMTEX');
+        end
+    else
+        begin
+            sintClek;  sintClek;
+        end;
+end;
+
+procedure recuaParaMesmoNivelDeIndentacao;
+    begin
+    avancaOuRecuaIndentacao(-1);
+end;
+
+procedure avancaParaMesmoNivelDeIndentacao;
+    begin
+    avancaOuRecuaIndentacao(1);
 end;
 
 {--------------------------------------------------------}
