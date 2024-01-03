@@ -22,21 +22,45 @@ uses
     edBloco, edvars, edmensag, edAcento, edTela, edLinha, edCursor;
 
 procedure cmdBusca;
-procedure buscaDeNovo (paraTraz: boolean);
+procedure buscaDeNovo (paraTraz, regExp: boolean);
 procedure formatarBuscado;
-procedure buscaPalavra (paraTraz: boolean);
+procedure buscaPalavra (paraTraz, regExp: boolean);
 procedure trocaPalavra;
 procedure limpaTexto (limparTexto: boolean);
 
 implementation
-
-{--------------------------------------------------------}
+uses regExpr;
 
 var buscarIdentica: boolean;
 
 {--------------------------------------------------------}
+{ Verifica se a linha passada contém a cadeia buscada, retorna maior do que 0 se encontrou
+{--------------------------------------------------------}
 
-procedure buscaParaFrente;
+function tentaMatch(linha: string; regExp: boolean): integer; inline;
+    begin
+    if regexp then
+        begin
+        with tRegExpr.Create do
+            begin
+            try
+                expression := buscado;
+                if exec(linha) then
+                    result := 1 // TODO posicionar na posição exata
+                else
+                result := 0;
+            finally
+                free;
+            end;
+        end;
+    end
+    else
+        result := pos(buscado, linha);
+end;
+
+{--------------------------------------------------------}
+
+procedure buscaParaFrente(regExp: boolean);
 var i, x: integer;
     linha: string;
 begin
@@ -50,7 +74,7 @@ begin
                 for x := 1 to posx do
                     linha[x] := ^a;
 
-            x := pos (buscado, linha);
+            x := tentaMatch(linha, regExp);
             if x > 0 then
                 begin
                     fala ('EDTXTENC');
@@ -65,7 +89,7 @@ end;
 
 {--------------------------------------------------------}
 
-procedure buscaParaTraz;
+procedure buscaParaTraz(regExp: boolean);
 var i, x: integer;
     linha: string;
 begin
@@ -79,7 +103,7 @@ begin
                 for x :=  posx to length(linha) do
                     linha[x] := ^a;
 
-            x := pos (buscado, linha);
+            x := tentaMatch(linha, regExp);
             if x > 0 then
                 begin
                     fala ('EDTXTENC');
@@ -94,15 +118,15 @@ end;
 
 {--------------------------------------------------------}
 
-Procedure buscaDeNovo (paraTraz: boolean);
+Procedure buscaDeNovo (paraTraz, regExp: boolean);
 begin
     if buscado = '' then
-        buscaPalavra (paraTraz)
+        buscaPalavra (paraTraz, regExp)
     else
     if paraTraz then
-        buscaParaTraz
+        buscaParaTraz(regExp)
     else
-        buscaParaFrente;
+        buscaParaFrente(regExp);
 end;
 
 {--------------------------------------------------------}
@@ -122,11 +146,16 @@ end;
 
 {--------------------------------------------------------}
 
-Procedure buscaPalavra (paraTraz: boolean);
+Procedure buscaPalavra (paraTraz, regExp: boolean);
 var c: char;
 begin
     buscado := sintAmbiente ('EDIVOX', 'BUSCADO');
-    fala ('EDTXTPRC');
+
+    if regExp then
+        fala ('EDRGXPRC') { Qual expressão regular? }
+    else
+        fala ('EDTXTPRC'); { Qual o texto? }
+
     c := sintEditaCampo (buscado, 1, wherey, 255, 80, true);
     sintGravaAmbiente('EDIVOX', 'BUSCADO', buscado);
     formatarBuscado;
@@ -137,7 +166,7 @@ begin
             exit;
         end;
 
-    buscaDeNovo (paraTraz);
+    buscaDeNovo (paraTraz, regExp);
 end;
 
 {--------------------------------------------------------}
@@ -262,9 +291,9 @@ deNovo:
 
     case tecla of
 
-       'P': buscaPalavra (false);
-       'A': buscaPalavra (true);
-       'N': buscaDeNovo (false);
+       'P': buscaPalavra (false, false);
+       'A': buscaPalavra (true, false);
+       'N': buscaDeNovo (false, false);
        'T': trocaPalavra;
 
        #$0: begin
