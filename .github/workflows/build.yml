@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v5
         with:
           submodules: 'true'
       - name: Fix permissions
@@ -21,7 +21,7 @@ jobs:
       - name: Compile
         run: ./pipeline/build.sh
       - name: Upload Executable
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: executable
           path: src/edivox.exe
@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download Executable from build
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v5
         with:
           name: executable
       - name: Create Release
@@ -45,7 +45,7 @@ jobs:
           release_name: Release ${{ github.ref }}
       - name: Upload Release Executable
         id: upload_release_asset
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
