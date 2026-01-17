@@ -574,6 +574,8 @@ begin
     else
     if f = 'EDTXTPRC' then txtmsg := 'Qual o texto ? '
     else
+    if f = 'EDRGXPRC' then txtmsg := 'Qual expressão regular ? '
+    else
     if f = 'EDTXTENC' then txtmsg := 'Texto encontrado'
     else
     if f = 'EDTXNENC' then txtmsg := 'Texto não encontrado'

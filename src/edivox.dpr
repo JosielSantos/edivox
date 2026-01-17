@@ -336,7 +336,7 @@ procedure trataPFeALT (tecla: char);
 var
     salva: integer;
     aux: boolean;
-    mantemMarca, saiuDaLinha, apertouShift: boolean;
+    mantemMarca, saiuDaLinha, apertouShift, apertouAlt: boolean;
     sf: string;
     n: integer;
 label reprocTecla;
@@ -344,6 +344,7 @@ begin
 reprocTecla:
 
     apertouShift := GetKeyState(VK_SHIFT) < 0;
+    apertouAlt := GetKeyState(VK_MENU) < 0;
     mantemMarca := apertouShift or
            (tecla = DEL) or (tecla = SHIFTINS) or (tecla = CTLINS);
     saiuDaLinha := (tecla in [ALTF1, F3, F5, CTLF5, F6, CTLF6,
@@ -421,13 +422,13 @@ reprocTecla:
                     formConfig;
 
         F5 : if apertouShift then
-                    buscaPalavra (true)
+                    buscaPalavra (true, apertouAlt)
                 else
-                    buscaPalavra (false);
+                    buscaPalavra (false, apertouAlt);
         CTLF5 : if apertouShift then
-                    buscaDeNovo (true)
+                    buscaDeNovo (true, apertouAlt)
                 else
-                    buscaDeNovo (false);
+                    buscaDeNovo (false, apertouAlt);
         F6:      trocaPalavra;
         CTLF6:   begin
                      if (pos ('=', texto[posy]) <> 0) and
