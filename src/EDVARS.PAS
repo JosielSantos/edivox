@@ -18,6 +18,9 @@ uses Classes;
 const
     VERSAO = '7.0';
     ALFABETA = '';
+    IDENT_BASE_FREQ = 220;
+    IDENT_DURACAO_BEEP = 80; {Milesegundos}
+    IDENT_MAX_ESPACOS = 72;
 
 type
     Frase = string;
@@ -58,6 +61,7 @@ var
 
     ntabs: integer;              { numero de tabulacoes marcadas }
     tabs: array [1..30] of integer; { tabulacoes }
+    frequenciaBaseIndentacao, duracaoIndentacao, maxEspacosIndentacao: integer;
 
     dirSomEdivox: string;        { diretorio de mensagens do Edivox }
 

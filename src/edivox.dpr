@@ -134,6 +134,15 @@ begin
             sintReinic (velGeral, comSapi, confTipoSapi, confNum, confVeloc, confTonal);
         end;
 
+            val (sintAmbiente('EDIVOX', 'FREQBASEINDENTACAO'), frequenciaBaseIndentacao, erro);
+            if erro <> 0 then frequenciaBaseIndentacao := IDENT_BASE_FREQ;
+
+            val (sintAmbiente('EDIVOX', 'DURACAOINDENTACAO'), duracaoIndentacao, erro);
+            if erro <> 0 then duracaoIndentacao := IDENT_DURACAO_BEEP;
+
+            val (sintAmbiente('EDIVOX', 'MAXESPACOSINDENTACAO'), maxEspacosIndentacao, erro);
+            if erro <> 0 then maxEspacosIndentacao := IDENT_MAX_ESPACOS;
+
     checkbreak := false;
     checkFocus := true;
     while keypressed do readkey;
